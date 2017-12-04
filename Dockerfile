@@ -5,7 +5,8 @@ RUN printf 'regen ALL=(ALL) ALL\n' | tee -a /etc/sudoers
 RUN printf '[multilib]\nInclude = /etc/pacman.d/mirrorlist\n' | tee -a /etc/pacman.conf && \
 	pacman-db-upgrade && \
 	pacman -Syyu --noconfirm && \
-	pacman -S --noconfirm git sudo
+	pacman -S --noconfirm git sudo && \
+	pacman -Ss --noconfirm font
 USER regen
 WORKDIR /home/regen
 RUN git clone https://aur.archlinux.org/libffi5.git && \
@@ -22,5 +23,10 @@ RUN git clone https://aur.archlinux.org/libffi5.git && \
 	cd regen && \
 	makepkg -si --noconfirm && \
 	cd .. && \
-	rm -rf regen
+	rm -rf regen && \
+	git clone https://aur.archlinux.org/ttf-ms-fonts.git && \
+	cd ttf-ms-fonts && \
+	makepkg -si --noconfirm && \
+	cd .. && \
+	rm -rf ttf-ms-fonts
 ENTRYPOINT ["regen"]
