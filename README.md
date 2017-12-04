@@ -12,5 +12,11 @@ $ docker run -e DISPLAY=$IP:0 -it rhargreaves/regen
 ## Linux
 
 ```
-$ docker run -e DISPLAY=unix$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -it rhargreaves/regen
+$ docker run --device /dev/snd \
+  -v /dev/snd:/dev/snd \
+  -v /tmp/.X11-unix:/tmp/.X11-unix \
+  -e DISPLAY=unix$DISPLAY \
+  -it rhargreaves/regen
 ```
+
+Use SDL for video and ALSA for sound.
